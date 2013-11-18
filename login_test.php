@@ -1,4 +1,4 @@
-<?php include "NewUserRegistration.php"; ?>
+
 
 <html>
 <head>
@@ -37,47 +37,6 @@
 		</div><!--close #returningUsers-->
 		
 	</div><!--close #loginBox-->
-
-
-	<div id="currentDB">
-
-		<h3>Current usernames and passwords in the database</h3>
-		<table>
-			<thead>
-				<tr>
-					<td>Usernames</td>
-					<td>Passwords</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>UN1</td>
-					<td>PW1</td>
-				</tr>
-
-				<tr>
-					<td>UN2</td>
-					<td>PW2</td>
-				</tr>
-				
-				<tr>
-					<td>UN3</td>
-					<td>PW3</td>
-				</tr>
-				
-				<tr>
-					<td>UN4</td>
-					<td>PW4</td>
-				</tr>
-				
-				<tr>
-					<td>UN5</td>
-					<td>PW5</td>
-				</tr>
-			</tbody>
-		</table>
-
-	</div><!--close #currentDB-->
 
 </body>
 </html>

@@ -1,0 +1,19 @@
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+table {
+	border: 1px dashed black;
+	border-collapse: collapse;;
+}
+
+thead {
+	font-weight: bold;
+}
+
+td {
+	border-right: 1px dashed black;
+	border-bottom: 1px dashed black;
+	padding: 5px;
+}
