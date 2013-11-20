@@ -1,4 +1,10 @@
 <?php
+////////////////////////////////////////////////////////////
+// To-Do:
+// 2. Set PW to be 8 or more characters and require at least one capital letter and at least one number
+// 3. Need to hash passwords (use phpass) and store hashed values in the database
+// 4. Need to implement session/cookie to display the logged in username on the NewUserRegistration2.php page
+////////////////////////////////////////////////////////////
 
 	// Get database login credentials from external file
 	include("login_test_credentials.php");
@@ -16,10 +22,10 @@
 
 
 
-	// Store form values from login_test.php in variables
-	$newEmail = $_POST['newEmail'];
-	$newPW = $_POST['newPW'];
-	$newConfPW = $_POST['newConfPW'];
+	// Store form values from login_test.php in variables; strip any leading or trailing whitespaces
+	$newEmail = trim($_POST['newEmail']);
+	$newPW = trim($_POST['newPW']);
+	$newConfPW = trim($_POST['newConfPW']);
 
 	// Sanitize email address that user input
 	$safe_newEmail = mysqli_real_escape_string($dbConnection, $newEmail);	
@@ -49,58 +55,63 @@
 		
 		// Only run this code if the email address is valid
 		if($valid_newEmail != '') {
-			echo "<br />" . $valid_newEmail . "<br />";
+			
+
 			// Check to see if email address that user entered is already in the database
 
 			// 1. Check database "email" column to see if there is a match to what the user entered
 			$queryCheckAllEmails = "SELECT * FROM users WHERE email = '{$valid_newEmail}' LIMIT 1";
-
 			$queryCheckAllEmailsResult = mysqli_query($dbConnection, $queryCheckAllEmails);
-			//confirm_query($queryCheckAllEmailsResult);
+			
+			// If the email address the user entered is already in the database 'email' column, then notify the user that the email address has already been registered; otherwise, validate the 2 passwords and add the new user to the database
 			if($dbEmail = mysqli_fetch_assoc($queryCheckAllEmailsResult)) {
 				echo "We have a match: " . $dbEmail['email'] . " is equal to " . $valid_newEmail . "<br />";
-				echo "This username has already been registered.";
+				echo $valid_newEmail . " has already been registered.";
 				return $dbEmail;
 			} else {
 
+				// Sanitize the user input to strip any code/tags that may have been entered
 				$safe_newPW = mysqli_real_escape_string($dbConnection, $newPW);
 				$safe_newConfPW = mysqli_real_escape_string($dbConnection, $newConfPW);
 
-				// Check to make sure two passwords the user has enter match each other
+				// Check to make sure two passwords the user has entered are not blank and match each other
 				if($safe_newPW != '' && $safe_newConfPW != '' && $safe_newPW === $safe_newConfPW) {
 
-					// If there is not a match, add the entry to the database and output a message to the user that says that they have been registered
+					// Add the new email address to the database and output a message to the user that says that they have been registered
 					
 					// Perform database query
 					$queryAddUserToDB  = "INSERT INTO users (email, password) 
 						VALUES ('{$newEmail}', '{$newPW}')";
-
 					$queryAddUserToDBResult = mysqli_query($dbConnection, $queryAddUserToDB);
 
 					// Test if there was a query syntax error
 					if ($queryAddUserToDBResult) {
 						// Success
-						echo "New user has been added to database.";
+						echo $valid_newEmail . " has been registered.";
 						// probably would do: redirect_to("somepage.php");
 					}
 					else {
 						// Failure
-						die("Query syntax was not valid.  MySQL error: " . mysqli_error($dbConnection));
+						die("Failed to add new user to database.  MySQL error: " . mysqli_error($dbConnection));
 					}
 				}
 				else {
-					echo "Passwords did not match.";
+					// If the 2 passwords the user entered did not match, notify the user
+					echo "Passwords did not match. " . $valid_newEmail . " has not been registered.";
 				}
 
 			}
 		} else {
-			echo "Must enter an email address.";
+			// If the email address that the user entered was not valid, notify the user
+			echo "Must enter a valid email address. " . $valid_newEmail . " has not been registered.";
 		}
 
 		?>
 
 		<div id="currentDB">
 
+			<br>
+			<br>
 			<h3>Current usernames and passwords in the database</h3>
 			<table>
 				<thead>
@@ -112,9 +123,12 @@
 				</thead>
 				<tbody>
 					<?php
+
+						// Get the entire contents of the 'users' table from the DB
 						$queryGetAllDBInfo = "SELECT * FROM users";	
 						$queryGetAllDBInfoResult = mysqli_query($dbConnection, $queryGetAllDBInfo);
 
+						// Iterate through the results and print each database row in a new table row
 						while($dbRow = mysqli_fetch_assoc($queryGetAllDBInfoResult)) {
 							echo "<tr>";
 							echo "<td>" . $dbRow["id"] . "</td>";
@@ -127,6 +141,7 @@
 			</table>
 
 		</div><!--close #currentDB-->
+
 	</body>
 </html>
 	
