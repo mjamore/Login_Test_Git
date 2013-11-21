@@ -7,7 +7,7 @@
 ////////////////////////////////////////////////////////////
 
 	// Get database login credentials from external file
-	include("login_test_credentials.php");
+	include("../login_test_credentials.php");
 
 	// 1. Connect to database
 	$dbConnection = mysqli_connect($host, $user, $password, $dbName);
@@ -36,7 +36,7 @@
 <html>
 	<head>
 		<title>Login Test Results Page</title>
-		<link rel="stylesheet" type="text/css" href="includes/css/register_results.css" />
+		<link rel="stylesheet" type="text/css" href="../includes/css/register_results.css" />
 	</head>
 	<body>
 
