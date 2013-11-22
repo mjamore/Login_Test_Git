@@ -1,11 +1,4 @@
 <?php
-////////////////////////////////////////////////////////////
-// To-Do:
-// 2. Set PW to be 8 or more characters and require at least one capital letter and at least one number
-// 3. Need to hash passwords (use phpass) and store hashed values in the database
-// 4. Need to implement session/cookie to display the logged in username on the NewUserRegistration2.php page
-////////////////////////////////////////////////////////////
-
 	// Get database login credentials from external file
 	include("../login_test_credentials.php");
 
@@ -36,7 +29,7 @@
 <html>
 	<head>
 		<title>Login Test Results Page</title>
-		<link rel="stylesheet" type="text/css" href="../includes/css/register_results.css" />
+		<link rel="stylesheet" type="text/css" href="../includes/css/register.css" />
 	</head>
 	<body>
 
@@ -46,10 +39,10 @@
 		if(filter_var($safe_newEmail, FILTER_VALIDATE_EMAIL))
 		{
 			$valid_newEmail = $safe_newEmail;
-			echo "Email address was valid. <br />";
+			echo "Email address was valid.<br>";
 		} else {
 			$valid_newEmail = '';
-			echo "Email address was invalid. <br />";
+			echo "Email address was invalid.<br>";
 		}
 
 		
@@ -65,9 +58,9 @@
 			
 			// If the email address the user entered is already in the database 'email' column, then notify the user that the email address has already been registered; otherwise, validate the 2 passwords and add the new user to the database
 			if($dbEmail = mysqli_fetch_assoc($queryCheckAllEmailsResult)) {
-				echo "We have a match: " . $dbEmail['email'] . " is equal to " . $valid_newEmail . "<br />";
-				echo $valid_newEmail . " has already been registered.";
-				return $dbEmail;
+				echo "We have a match: '" . $dbEmail['email'] . "' is equal to '" . $valid_newEmail . "'<br>";
+				echo "'" . $valid_newEmail . "' has already been registered.  No change has been made to the database.<br>";
+				echo "<a href='/~Michael/Login_Test_Git/public_html/home.php'>Return to Homepage</a>";
 			} else {
 
 				// Sanitize the user input to strip any code/tags that may have been entered
@@ -87,8 +80,8 @@
 					// Test if there was a query syntax error
 					if ($queryAddUserToDBResult) {
 						// Success
-						echo $valid_newEmail . " has been registered.";
-						// probably would do: redirect_to("somepage.php");
+						echo "'" . $valid_newEmail . "' has been registered.<br>";
+						echo "<a href='/~Michael/Login_Test_Git/public_html/home.php'>Return to Homepage</a>";
 					}
 					else {
 						// Failure
@@ -97,13 +90,17 @@
 				}
 				else {
 					// If the 2 passwords the user entered did not match, notify the user
-					echo "Passwords did not match. " . $valid_newEmail . " has not been registered.";
+					echo "Passwords did not match.<br>";
+					echo "'" . $valid_newEmail . "' has not been registered.<br>";
+					echo "<a href='/~Michael/Login_Test_Git/public_html/home.php'>Return to Homepage</a>";
 				}
 
 			}
 		} else {
 			// If the email address that the user entered was not valid, notify the user
-			echo "Must enter a valid email address. " . $valid_newEmail . " has not been registered.";
+			echo "Must enter a valid email address.<br>";
+			echo "'" . $safe_newEmail . "' has not been registered.<br>";
+			echo "<a href='/~Michael/Login_Test_Git/public_html/home.php'>Return to Homepage</a>";
 		}
 
 		?>

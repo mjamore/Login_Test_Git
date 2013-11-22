@@ -1,0 +1,64 @@
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+#loggedInStatus p  {
+	text-align: right;
+}
+
+#loggedInStatus button {
+	float:right;
+}
+
+form {
+	border: 1px solid black;
+}
+
+div.homepageButtons {
+	height: 50px;
+	width: 200px;
+	background-color: #00B8FF;
+	border-radius: 15px;
+	margin: 50px auto;
+	border-bottom: 1px solid black;
+	box-shadow: 1px 1px 5px 1px black;
+}
+
+div.homepageButtons:hover {
+	cursor: pointer;
+	background-color: 00A2E0;
+}
+
+div.homepageButtons p {
+	text-align: center;
+	font-size: 200%;
+	font-family: Arial;
+	text-decoration: none;
+	color: white;
+	text-shadow: 1px 1px 1px #949494;
+	line-height: 45px;
+}
+
+div#newUsers, div#returningUsers {
+	display: none;
+}
+
+table {
+	border: 1px dashed black;
+	border-collapse: collapse;;
+}
+
+thead {
+	font-weight: bold;
+}
+
+td {
+	border-right: 1px dashed black;
+	border-bottom: 1px dashed black;
+	padding: 5px;
+}
+
+.clearFloat {
+	clear: both;
+}
