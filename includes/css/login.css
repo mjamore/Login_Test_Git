@@ -1,20 +1,2 @@
-
-
-form {
-	border: 1px solid black;
-}
-
-table {
-	border: 1px dashed black;
-	border-collapse: collapse;;
-}
-
-thead {
-	font-weight: bold;
-}
-
-td {
-	border-right: 1px dashed black;
-	border-bottom: 1px dashed black;
-	padding: 5px;
-}
+form{border:1px solid black}thead{font-weight:700}td{border-right:1px dashed black;border-bottom:1px dashed black;padding:5px}
+/* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */

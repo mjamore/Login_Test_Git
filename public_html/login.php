@@ -2,20 +2,8 @@
 	// Enable sessions
 	session_start();
 
-
-	// Get database login credentials from external file
-	include("../login_test_credentials.php");
-
-	// 1. Connect to database
-	$dbConnection = mysqli_connect($host, $user, $password, $dbName);
-
-	// Test if connection occurred
-	if(mysqli_connect_errno()) {
-		die("Database connection failed: " .
-			mysqli_connect_error() .
-			" (" . mysqli_connect_errno() . ")"
-		);
-	}// Close database connection test
+	// Connect to DB via connect_to_db.php file
+	include("../includes/php/connect_to_db.php");
 
 
 
@@ -125,12 +113,16 @@
 <html>
 <head>
 	<title>Database Test</title>
+	<link rel="stylesheet" type="text/css" href="../includes/css/site_wide.css" />
 	<link rel="stylesheet" type="text/css" href="../includes/css/login.css" />
 	<script src="../includes/js/lib/jquery-1.9.1.js"></script>
 	<script src="../includes/js/login.js"></script>
 </head>
 
 <body>
+
+	<?php include("../includes/php/page_title.php"); ?>
+
 	<?php if($_SESSION['authenticated'] == 'true' ) { ?>
 		<h3>Hello, <?php if(isset($_SESSION['returningEmail'])) echo "'" . htmlspecialchars($_SESSION['returningEmail']) . "'"; ?>!  You are logged in.</h3>
 		<!-- When user clicks logout button, delete sessions and redirect to home.php -->
@@ -145,57 +137,10 @@
 		<a href="/~Michael/Login_Test_Git/public_html/home.php">Return to the homepage.</a>
 	<?php }  ?>
 
-
-	
-
-	
-
-
-	<div id="currentDB">
-
-		<br>
-		<br>
-		<h3>Current usernames and passwords in the database</h3>
-		<table>
-			<thead>
-				<tr>
-					<td>id</td>
-					<td>username</td>
-					<td>password</td>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-
-					// Get the entire contents of the 'users' table from the DB
-					$queryGetAllDBInfo = "SELECT * FROM users";	
-					$queryGetAllDBInfoResult = mysqli_query($dbConnection, $queryGetAllDBInfo);
-
-					// Iterate through the results and print each database row in a new table row
-					while($dbRow = mysqli_fetch_assoc($queryGetAllDBInfoResult)) {
-						echo "<tr>";
-						echo "<td>" . $dbRow["id"] . "</td>";
-						echo "<td>" . $dbRow["email"] . "</td>";
-						echo "<td>" . $dbRow["password"] . "</td>";
-						echo "</tr>";
-					}
-				?>
-			</tbody>
-		</table>
-
-	</div><!--close #currentDB-->
+	<?php include("../includes/php/display_db.php"); ?>
 
 </body>
 </html>
 
-<?php
-	// 3. Use returned MySQL data (if any)
-		// No data currently being returned; only inserting values into database.
-
-	// 4. Release returned data from memory
-		// Since we are not returning any information from the database, there is nothing to release from memory in this case
-
-	// 5. Close database connection
-	mysqli_close($dbConnection);
-
-?>
+<!-- Close DB connection -->
+<?php include("../includes/php/disconnect_from_db.php"); ?>
