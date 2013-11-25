@@ -41,7 +41,8 @@
 
 		
 		// Only run this code if the email address is valid
-		if($valid_newEmail != '') {
+		if($valid_newEmail != '')
+		{
 			
 
 			// Check to see if email address that user entered is already in the database
@@ -51,46 +52,74 @@
 			$queryCheckAllEmailsResult = mysqli_query($dbConnection, $queryCheckAllEmails);
 			
 			// If the email address the user entered is already in the database 'email' column, then notify the user that the email address has already been registered; otherwise, validate the 2 passwords and add the new user to the database
-			if($dbEmail = mysqli_fetch_assoc($queryCheckAllEmailsResult)) {
-				echo "We have a match: '" . $dbEmail['email'] . "' is equal to '" . $valid_newEmail . "'<br>";
+			if($dbEmail = mysqli_fetch_assoc($queryCheckAllEmailsResult))
+			{
 				echo "'" . $valid_newEmail . "' has already been registered.  No change has been made to the database.<br>";
 				echo "<a href='/~Michael/Login_Test_Git/public_html/home.php'>Return to Homepage</a>";
-			} else {
+			}
+			else
+			{
 
 				// Sanitize the user input to strip any code/tags that may have been entered
 				$safe_newPW = mysqli_real_escape_string($dbConnection, $newPW);
 				$safe_newConfPW = mysqli_real_escape_string($dbConnection, $newConfPW);
 
-				// Check to make sure two passwords the user has entered are not blank, match each other, and are greater than 7 charac
-				if($safe_newPW !== '' && $safe_newConfPW !== '' && $safe_newPW === $safe_newConfPW && strlen($safe_newPW) > 7 && strlen($safe_newConfPW) > 7) {
+				if($safe_newPW !== '' && $safe_newConfPW !== '')
+				{
+					if($safe_newPW === $safe_newConfPW)
+					{
+						// combine these into one variable
+						$equalPws = $safe_newPW;
+						if(strlen($equalPws) < 8)
+						{
+							echo "Password must be at least 8 characters.<br>";
+						}
+						else
+						{
+							// Make sure PW contains at least 1 capital letter, at least 1 lowercase letter, and at least 1 number
+							$uppercase = preg_match('@[A-Z]@', $equalPws);
+							$lowercase = preg_match('@[a-z]@', $equalPws);
+							$number    = preg_match('@[0-9]@', $equalPws);
 
-					// Add the new email address to the database and output a message to the user that says that they have been registered
-					
-					// Perform database query
-					$queryAddUserToDB  = "INSERT INTO users (email, password) 
-						VALUES ('{$newEmail}', '{$newPW}')";
-					$queryAddUserToDBResult = mysqli_query($dbConnection, $queryAddUserToDB);
+							if(!$uppercase || !$lowercase || !$number)
+							{
+				  				// tell the user something went wrong
+				  				echo "Password must contain at least 1 capital letter, at least 1 lowercase letter, and at least 1 number.";
+							}
+							else
+							{
+								// Perform database query
+								$queryAddUserToDB  = "INSERT INTO users (email, password) 
+									VALUES ('{$newEmail}', '{$equalPws}')";
+								$queryAddUserToDBResult = mysqli_query($dbConnection, $queryAddUserToDB);
 
-					// Test if there was a query syntax error
-					if ($queryAddUserToDBResult) {
-						// Success
-						echo "'" . $valid_newEmail . "' has been registered.<br>";
-						echo "<a href='/~Michael/Login_Test_Git/public_html/home.php'>Return to Homepage</a>";
+								// Test if there was a query syntax error
+								if ($queryAddUserToDBResult) {
+									// Success
+									echo "'" . $valid_newEmail . "' has been registered.<br>";
+									echo "<a href='/~Michael/Login_Test_Git/public_html/home.php'>Return to Homepage</a>";
+								}
+								else {
+									// Failure
+									die("Failed to add new user to database.  MySQL error: " . mysqli_error($dbConnection));
+								}
+							}
+						}
 					}
-					else {
-						// Failure
-						die("Failed to add new user to database.  MySQL error: " . mysqli_error($dbConnection));
+					else
+					{
+						echo "Passwords did not match.<br>";
 					}
 				}
-				else {
-					// If the 2 passwords the user entered did not match, notify the user
-					echo "Password not valid.  Both passwords must match and be at least 8 characters in length.<br>";
-					echo "'" . $valid_newEmail . "' has not been registered.<br>";
-					echo "<a href='/~Michael/Login_Test_Git/public_html/home.php'>Return to Homepage</a>";
+				else
+				{
+					echo "You must fill in both password fields.<br>";
 				}
 
 			}
-		} else {
+		}
+		else
+		{
 			// If the email address that the user entered was not valid, notify the user
 			echo "Must enter a valid email address.<br>";
 			echo "'" . $safe_newEmail . "' has not been registered.<br>";

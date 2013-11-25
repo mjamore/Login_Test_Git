@@ -23,7 +23,7 @@ Login.php:
 
 
 Register.php:
-	- add PW validation that checks that PW contains AT LEAST 1 capital letter, 1 lowercase letter, and 1 number
+	
 
 
 

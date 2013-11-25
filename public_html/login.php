@@ -133,7 +133,7 @@
 		
 		
 	<?php } else { ?>
-		<h3>You are not logged in.</h3>
+		<h3>You did not supply valid login credentials.  You are not logged in.</h3>
 		<a href="/~Michael/Login_Test_Git/public_html/home.php">Return to the homepage.</a>
 	<?php }  ?>
 

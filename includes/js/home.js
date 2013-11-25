@@ -65,9 +65,9 @@ $(document).ready(function() {
 			}
 	});
 
-	// $('div#loginBtn').click(function() {
-	// 	$('form:visible').submit();
-	// });
+	$('div#loginBtn').click(function() {
+		$('form:visible').submit();
+	});
 
 
 });
